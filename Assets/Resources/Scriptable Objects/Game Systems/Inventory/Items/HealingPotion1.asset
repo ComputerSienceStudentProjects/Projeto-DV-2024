@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1398b4b0c61f47e4da37d981ea7fb971, type: 3}
-  m_Name: Event_AISelectCharacter
+  m_Script: {fileID: 11500000, guid: 385a80ad22f34b96ac46105aa6596960, type: 3}
+  m_Name: HealingPotion1
   m_EditorClassIdentifier: 
-  Arguments:
-  - name: Character
-    Type: GameObject
+  itemObjectReference: {fileID: 0}
+  itemIcon: {fileID: 0}
+  itemType: 0

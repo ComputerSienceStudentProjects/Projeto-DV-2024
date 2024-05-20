@@ -5,11 +5,11 @@ using UnityEngine;
 
 public class AiController : MonoBehaviour
 {
-    private GameStateAccessor _gameStateAccessor;
+    private GameStateService _gameStateService;
     
     private void Awake()
     {
-        _gameStateAccessor = GameStateAccessor.GetInstance();
+        _gameStateService = GameStateService.GetInstance();
     }
 
     public void OnAITurnStart()

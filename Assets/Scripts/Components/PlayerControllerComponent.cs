@@ -4,10 +4,10 @@ using UnityEngine;
 [AddComponentMenu(menuName:"Game Components/Player Controller")]
 public class PlayerControllerComponent : MonoBehaviour
 {
-    private GameStateAccessor _gameStateAccessor;
+    private GameStateService _gameStateService;
     private void Awake()
     {
-        _gameStateAccessor = GameStateAccessor.GetInstance();
+        _gameStateService = GameStateService.GetInstance();
     }
 
     public void OnPlayerTurnStart()
