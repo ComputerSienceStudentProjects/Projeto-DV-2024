@@ -4,59 +4,59 @@ using UnityEngine;
 
 public class GameStateControllerComponent : MonoBehaviour
 {
-    private GameStateAccessor _gameStateAccessor;
+    private GameStateService _gameStateService;
     private void Awake()
     {
-        _gameStateAccessor = GameStateAccessor.GetInstance();
+        _gameStateService = GameStateService.GetInstance();
     }
 
     #region Turn Events
         public void OnPlayerEndTurnEvent()
         {
-            _gameStateAccessor.EndPlayerTurn();
+            _gameStateService.EndPlayerTurn();
         }
         
         public void OnAIEndEvent()
         {
-            _gameStateAccessor.EndAITurn();
+            _gameStateService.EndAITurn();
         }
     #endregion
     
 
     public void OnPlayerSelected()
     {
-        _gameStateAccessor.PlayerSelectCharacter();
+        _gameStateService.PlayerSelectCharacter();
     }
     
     public void OnAISelected()
     {
-        _gameStateAccessor.AiSelectCharacter();
+        _gameStateService.AiSelectCharacter();
     }
     
     public void OnPartyInitEvent()
     {
-        _gameStateAccessor.InitTeams();
+        _gameStateService.InitTeams();
     }
     
 
     public void OnPlayerWonEvent()
     {
-        _gameStateAccessor.PlayerWon();
+        _gameStateService.PlayerWon();
     }
 
     public void OnAIWon()
     {
-        _gameStateAccessor.AIWon();
+        _gameStateService.AIWon();
     }
     
     public void OnGameStartEvent()
     {
-        _gameStateAccessor.InitGame();
+        _gameStateService.InitGame();
     }
 
 
     public void OnGameRestartEvent()
     {
-        _gameStateAccessor.ResetGame();
+        _gameStateService.ResetGame();
     }
 }

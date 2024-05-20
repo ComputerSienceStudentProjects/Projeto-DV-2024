@@ -3,12 +3,12 @@ using UnityEngine;
 
 namespace NativeClasses
 {
-    public class GameStateAccessor
+    public class GameStateService
     {
         #region SingletonPattern
-        private static readonly GameStateAccessor Instance = new GameStateAccessor();
+        private static readonly GameStateService Instance = new GameStateService();
 
-        public static GameStateAccessor GetInstance()
+        public static GameStateService GetInstance()
         {
             return Instance;
         }
@@ -23,7 +23,7 @@ namespace NativeClasses
         private readonly PartyElementsScriptableObject _aiParty;
         #endregion
     
-        private GameStateAccessor()
+        private GameStateService()
         { 
             _gameStateScriptableObject =
                 ResourceLoader.Load<GameStateScriptableObject>("Scriptable Objects/Game Systems/GameState");
@@ -234,7 +234,7 @@ namespace NativeClasses
                 Debug.Log("Cannot init parties during started match");
                 return;
             }
-            //DONE: Find Selected Characters and add them to each party, this should be done on the ui, where the player 
+            //DONE: Find Selected Characters and add them to each party, this should be done on the ui, where the player
             //DONE: will select characters, and such selected characters, will have a tag PlayerPartySelectionSelected
             //DONE: and AI(will be auto defined) will have a tag AIPartySelectionSelected
             GameObject[] selectedPlayerCharacters = GameObject.FindGameObjectsWithTag("PlayerPartySelectionSelected");
