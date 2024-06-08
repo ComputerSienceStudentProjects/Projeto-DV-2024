@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
@@ -70,6 +71,16 @@ public class Character : MonoBehaviour, IControllable, ISelectable
     public void ApplyAttackResults(AttackResult attackResult)
     {
         characterData.SubtractHp(attackResult.ResultingDamage);
+    }
+
+    public ScriptableObject[] GetAttacks()
+    {
+        return attacks;
+    }
+
+    public string GetName()
+    {
+        return characterData.GetName;
     }
 
     public void OnSelect()

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -19,7 +20,17 @@ public class AiControllable : MonoBehaviour, IControllable, IAIControllable
 
     public void ApplyAttackResults(AttackResult attackResult)
     {
+        throw new NotImplementedException("Someone called Apply attack results, not yet implemented");
+    }
+
+    public ScriptableObject[] GetAttacks()
+    {
         throw new System.NotImplementedException();
+    }
+
+    public string GetName()
+    {
+        throw new NotImplementedException();
     }
 
     public void FindLocation()
