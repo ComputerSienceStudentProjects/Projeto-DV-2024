@@ -10,6 +10,8 @@ public class NormalAttack : ScriptableObject, IAttack
     [SerializeField] private string attackName = "Normal Attack";
     [SerializeField] private float damageValue;
     [SerializeField] private float healingValue;
+    [SerializeField] private GameEvent attackAnimationObject;
+    
     public void Execute(IControllable target)
     {
         if (target == null) return;

@@ -1,7 +1,7 @@
 ﻿public class AttackResult
 {
-    private float _resultingDamage;
-    private float _resultingHealing;
+    private readonly float _resultingDamage;
+    private readonly float _resultingHealing;
 
     public AttackResult(float resultingDamage,float resultingHealing)
     {
