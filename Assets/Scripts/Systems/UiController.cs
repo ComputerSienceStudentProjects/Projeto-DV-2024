@@ -1,10 +1,11 @@
 using System;
+using System.Collections.Generic;
 using UFramework.GameEvents;
 using UnityEngine;
 
 public class UiController : MonoBehaviour
 {
-    [Header("Event definition")] 
+    [Header("Event definition")]
     [SerializeField] private GameEvent playerTurnEndEvent;
     [SerializeField] private GameEvent aITurnEndEvent;
     [SerializeField] private GameEvent gameStartedEvent;
@@ -14,7 +15,9 @@ public class UiController : MonoBehaviour
     [SerializeField] private GameEvent partyInitEvent;
     [SerializeField] private GameEvent playerSelectCharacterEvent;
     [SerializeField] private GameEvent aISelectCharacterEvent;
-    
+
+    [SerializeField] private GameEvent aiStart;
+
 #if UNITY_EDITOR
     private void OnGUI()
     {
@@ -22,17 +25,17 @@ public class UiController : MonoBehaviour
         {
             playerTurnEndEvent.Raise();
         }
-        
+
         if (GUI.Button(new Rect(10, 40, 150, 25), "End AI Turn"))
         {
             aITurnEndEvent.Raise();
         }
-        
+
         if (GUI.Button(new Rect(10, 70, 150, 25), "Start Game"))
         {
             gameStartedEvent.Raise();
         }
-        
+
         if (GUI.Button(new Rect(10, 100, 150, 25), "Reset Game"))
         {
             gameResetEvent.Raise();
@@ -42,7 +45,7 @@ public class UiController : MonoBehaviour
         {
             playerWonEvent.Raise();
         }
-        
+
         if (GUI.Button(new Rect(10, 160, 150, 25), "Test AI Won Event"))
         {
             aIWonEvent.Raise();
@@ -52,16 +55,21 @@ public class UiController : MonoBehaviour
         {
             partyInitEvent.Raise();
         }
-        
+
         if (GUI.Button(new Rect(170, 10, 150, 25), "Player Select Char"))
         {
             playerSelectCharacterEvent.Raise();
         }
-        
+
         if (GUI.Button(new Rect(170, 40, 150, 25), "Player Select Char"))
         {
             aISelectCharacterEvent.Raise();
         }
+
+        if (GUI.Button(new Rect(170, 70, 150, 25), "AI Turn"))
+        {
+            aiStart.Raise();
+        }
     }
-    #endif
+#endif
 }

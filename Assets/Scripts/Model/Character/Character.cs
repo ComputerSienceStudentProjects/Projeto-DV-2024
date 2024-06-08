@@ -7,8 +7,8 @@ using UnityEngine.AI;
 public class Character : MonoBehaviour, IControllable, ISelectable
 {
     private readonly string _guid = Guid.NewGuid().ToString();
-    
-    [Header("Character Information")] 
+
+    [Header("Character Information")]
     [SerializeField] private CharacterData characterData;
     [SerializeField] private ScriptableObject[] attacks;
 
@@ -25,7 +25,7 @@ public class Character : MonoBehaviour, IControllable, ISelectable
         meshRenderer = GetComponent<MeshRenderer>();
         selectedMaterial = meshRenderer.materials[1];
         walkingMaterial = meshRenderer.materials[2];
-        selectedMaterial.SetFloat("_OutlineSize",0f);
+        selectedMaterial.SetFloat("_OutlineSize", 0f);
     }
 
     public void PerformAttack(IAttack attack, IControllable target)
@@ -48,14 +48,14 @@ public class Character : MonoBehaviour, IControllable, ISelectable
         }
         return false;
     }
-    
-    
+
+
     private void Update()
     {
         if (!_shouldCheckIfReaced) return;
         if (!ReachedDestinationOrGaveUp()) return;
-        walkingMaterial.SetFloat("_OutlineSize",0f);
-        if (_isSelected) selectedMaterial.SetFloat("_OutlineSize",1.1f);
+        walkingMaterial.SetFloat("_OutlineSize", 0f);
+        if (_isSelected) selectedMaterial.SetFloat("_OutlineSize", 1.1f);
         _shouldCheckIfReaced = false;
     }
 
@@ -63,10 +63,10 @@ public class Character : MonoBehaviour, IControllable, ISelectable
     {
         _agent.SetDestination(destination);
         _shouldCheckIfReaced = true;
-        selectedMaterial.SetFloat("_OutlineSize",0f);
-        walkingMaterial.SetFloat("_OutlineSize",1.1f);
+        selectedMaterial.SetFloat("_OutlineSize", 0f);
+        walkingMaterial.SetFloat("_OutlineSize", 1.1f);
     }
-    
+
     public void ApplyAttackResults(AttackResult attackResult)
     {
         characterData.SubtractHp(attackResult.ResultingDamage);
@@ -76,12 +76,12 @@ public class Character : MonoBehaviour, IControllable, ISelectable
     {
         Debug.Log("Here!");
         _isSelected = true;
-        selectedMaterial.SetFloat("_OutlineSize",1.1f);
+        selectedMaterial.SetFloat("_OutlineSize", 1.1f);
     }
 
     public void OnDeselect()
     {
         _isSelected = false;
-        selectedMaterial.SetFloat("_OutlineSize",0f);
+        selectedMaterial.SetFloat("_OutlineSize", 0f);
     }
 }
