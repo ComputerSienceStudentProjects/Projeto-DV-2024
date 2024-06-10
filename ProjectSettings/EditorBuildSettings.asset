@@ -8,6 +8,15 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MainMenu.unity
     guid: 6af58a62e22ddea44a5687eac39beadd
+  - enabled: 1
+    path: Assets/Scenes/LoadScreen.unity
+    guid: 3bd3dede328379049b3a2a5316a38f78
+  - enabled: 1
+    path: Assets/Scenes/OpenWorld.unity
+    guid: e549943db014ecb45be1df64f1b4bef1
+  - enabled: 1
+    path: Assets/Scenes/BattleScene.unity
+    guid: 4607459b45466ff4c8a48b21bb2a93b9
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 777740f902734ee4c84258e8d1270363,
       type: 2}

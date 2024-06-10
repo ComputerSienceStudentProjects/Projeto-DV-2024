@@ -9,6 +9,8 @@ public class Character : MonoBehaviour, IControllable, ISelectable
 {
     private readonly string _guid = Guid.NewGuid().ToString();
 
+    [SerializeField] private Texture2D hoverCursor;
+    
     [Header("Character Information")]
     [SerializeField] private CharacterData characterData;
     [SerializeField] private ScriptableObject[] attacks;
@@ -27,6 +29,16 @@ public class Character : MonoBehaviour, IControllable, ISelectable
         selectedMaterial = meshRenderer.materials[1];
         walkingMaterial = meshRenderer.materials[2];
         selectedMaterial.SetFloat("_OutlineSize", 0f);
+    }
+
+    private void OnMouseEnter()
+    {
+        Cursor.SetCursor(hoverCursor,Vector2.zero, CursorMode.Auto);
+    }
+
+    private void OnMouseExit()
+    {
+        Cursor.SetCursor(null,Vector2.zero,CursorMode.Auto);
     }
 
     public void PerformAttack(IAttack attack, IControllable target)
