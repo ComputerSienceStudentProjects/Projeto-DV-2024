@@ -1,0 +1,13 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="root" style="flex-grow: 1;">
+        <ui:VisualElement name="PossibleAttacks" style="position: absolute; width: 300px; top: 656px; left: 75px; bottom: 74px; display: none;">
+            <ui:Label text="Possible  Attacks" display-tooltip-when-elided="true" style="font-size: 24px;" />
+            <ui:VisualElement name="AttackListContainer" style="width: 300px; justify-content: flex-start; position: relative; left: 0; bottom: 0; height: 400px; flex-direction: column-reverse; align-items: stretch; flex-grow: 1;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="Buttons" style="position: absolute; bottom: 100px; height: 81px; right: 50px; width: 250px;">
+            <ui:Label text="Actions" display-tooltip-when-elided="true" style="font-size: 24px;" />
+            <ui:Button text="Finish Movement Phase" display-tooltip-when-elided="true" name="FinishPhase" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:Label text="Your Turn" display-tooltip-when-elided="true" name="Turn" style="position: absolute; top: 50px; left: 50px; font-size: 32px;" />
+</ui:UXML>

@@ -12,3 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1398b4b0c61f47e4da37d981ea7fb971, type: 3}
   m_Name: Event_AIStartTurn
   m_EditorClassIdentifier: 
+  Arguments:
+  - name: 
+    Type: 
