@@ -19,6 +19,7 @@ public class Character : MonoBehaviour, IControllable, ISelectable
     [SerializeField] private MeshRenderer meshRenderer;
     [SerializeField] private Material selectedMaterial;
     [SerializeField] private Material walkingMaterial;
+    private bool hasAttacked = false;
     private bool _shouldCheckIfReaced = false;
     private bool _isSelected;
 
@@ -43,7 +44,9 @@ public class Character : MonoBehaviour, IControllable, ISelectable
 
     public void PerformAttack(IAttack attack, IControllable target)
     {
+        if (hasAttacked) return;
         if (target == null) return;
+        hasAttacked = true;
         attack?.Execute(target);
     }
 
@@ -93,6 +96,11 @@ public class Character : MonoBehaviour, IControllable, ISelectable
     public string GetName()
     {
         return characterData.GetName;
+    }
+
+    public void ResetAttackFlag()
+    {
+        hasAttacked = false;
     }
 
     public void OnSelect()

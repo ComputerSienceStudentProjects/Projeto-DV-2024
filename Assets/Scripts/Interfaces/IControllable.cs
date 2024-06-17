@@ -10,4 +10,5 @@ public interface IControllable
     ScriptableObject[] GetAttacks();
 
     string GetName();
+    void ResetAttackFlag();
 }

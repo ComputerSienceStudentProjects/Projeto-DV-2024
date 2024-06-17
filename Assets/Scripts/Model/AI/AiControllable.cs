@@ -33,6 +33,11 @@ public class AiControllable : MonoBehaviour, IControllable, IAIControllable
         throw new NotImplementedException();
     }
 
+    public void ResetAttackFlag()
+    {
+        //do nothing
+    }
+
     public void FindLocation()
     {
         throw new System.NotImplementedException();

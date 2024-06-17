@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
+using Cursor = UnityEngine.UIElements.Cursor;
 
 public class PlayerInputSystem : MonoBehaviour
 {
@@ -10,16 +12,56 @@ public class PlayerInputSystem : MonoBehaviour
     private IControllable _aiTarget;
     private IControllable _previousControllableReference;
     private Camera _mainCamera;
-
-    private bool ShouldShowAttackList;
-    public bool testMovementPhase;
-    public bool testAttackPhase;
     
+
+    private bool _isMovementPhase = true;
+    private bool _isAttackPhase;
+
+    [SerializeField] private UIDocument uiDocument;
+    [SerializeField] private VisualTreeAsset attackButtonComponent; 
+    private VisualElement _rootElement;
+
+    [SerializeField] private GameEvent startAIEvent;
     
     private void Update()
     {
-        if (testMovementPhase) HandleMovementPhaseInput();
-        if (testAttackPhase) HandleAttackPhaseInput();
+        if (_previousControllableReference == null) HideAttacks();
+        if (_isMovementPhase) HandleMovementPhaseInput();
+        if (_isAttackPhase) HandleAttackPhaseInput();
+    }
+
+    private void ShowAttacks()
+    {
+        VisualElement possibleAttacksContainer = _rootElement.Q<VisualElement>("PossibleAttacks");
+        VisualElement attackContainer = _rootElement.Q<VisualElement>("AttackListContainer");
+        possibleAttacksContainer.style.display = DisplayStyle.Flex;
+        
+        
+        foreach (ScriptableObject attackObject in _previousControllableReference.GetAttacks())
+        {
+            IAttack attack = (IAttack)attackObject;
+            Debug.Log("Attack: " + attack.GetName() + ",Icon: " + attack.GetIcon() + ", color: " + attack.GetColor() + ", Text color: " + attack.GetTextColor());
+            TemplateContainer newAttackButton = attackButtonComponent.CloneTree();
+            newAttackButton.Q<VisualElement>("AttackButtonBackground").style.backgroundColor = attack.GetColor();
+            newAttackButton.Q<Label>("AttackName").style.color = attack.GetTextColor();
+            newAttackButton.Q<Label>("AttackName").text = attack.GetName();
+            newAttackButton.Q<VisualElement>("AttackIcon").style.backgroundImage = new StyleBackground(attack.GetIcon());
+            newAttackButton.Q<VisualElement>().RegisterCallback<ClickEvent>(evt => OnAttackClick(attack));
+            attackContainer.Add(newAttackButton.contentContainer);
+        }
+    }
+
+    private void OnAttackClick(IAttack attack)
+    {
+        _previousControllableReference.PerformAttack(attack,_aiTarget);
+    }
+
+    private void HideAttacks()
+    {
+        VisualElement possibleAttacksContainer = _rootElement.Q<VisualElement>("PossibleAttacks");
+        VisualElement attackContainer = _rootElement.Q<VisualElement>("AttackListContainer");
+        possibleAttacksContainer.style.display = DisplayStyle.None;
+        attackContainer.Clear();
     }
 
     private void Awake()
@@ -28,6 +70,46 @@ public class PlayerInputSystem : MonoBehaviour
         if (_mainCamera == null)
         {
             Debug.Break();
+        }
+    }
+
+    private void Start()
+    {
+        _rootElement = uiDocument.rootVisualElement;
+        _rootElement.Q<Button>("FinishPhase").clicked += OnEndPhaseClicked;
+    }
+
+    public void StartPlayerTurn()
+    {
+        _isMovementPhase = true;
+        _isAttackPhase = false;
+        _rootElement.Q<VisualElement>("Buttons").style.display = DisplayStyle.Flex;
+        _rootElement.Q<Label>("Turn").text = "Your Turn";
+    }
+    
+    private void OnEndPhaseClicked()
+    {
+        if (_isMovementPhase)
+        {
+            _isMovementPhase = false;
+            _isAttackPhase = true;
+            _rootElement.Q<Button>("FinishPhase").text = "Finish Attack Phase";
+        }
+        else if (_isAttackPhase)
+        {
+            _isMovementPhase = false;
+            _isAttackPhase = false;
+            _rootElement.Q<VisualElement>("Buttons").style.display = DisplayStyle.None;
+            _rootElement.Q<Label>("Turn").text = "AI Turn";
+            startAIEvent.Raise();
+            foreach (GameObject gameObject in GameObject.FindGameObjectsWithTag("Player"))
+            {
+                gameObject.GetComponent<IControllable>()?.ResetAttackFlag();
+                gameObject.GetComponent<ISelectable>()?.OnDeselect();
+                _previousControllableReference = null;
+                _aiTarget = null;
+                _previousSelectableReference = null;
+            }
         }
     }
 
@@ -54,7 +136,7 @@ public class PlayerInputSystem : MonoBehaviour
                     }
                     _aiTarget = hit.collider.GetComponent<IControllable>();
                         Debug.Log("both offender and target set");
-                        ShouldShowAttackList = true;
+                        ShowAttacks();
                     return;
                 }
                 ISelectable selectable = hit.collider.GetComponent<ISelectable>();
@@ -84,56 +166,17 @@ public class PlayerInputSystem : MonoBehaviour
 
     private void HandleSelectable(ISelectable selectable,IControllable target)
     {
+        HideAttacks();
         if (_previousSelectableReference == selectable)
         {
             selectable.OnDeselect();
             _previousSelectableReference = null;
+            _previousControllableReference = null;
             return;
         }
         selectable.OnSelect();
         _previousSelectableReference?.OnDeselect();
         _previousSelectableReference = selectable;
         _previousControllableReference = target;
-    }
-
-
-    private void OnGUI()
-    {
-        if (GUI.Button(new Rect(10, 10, 250, 25), "Finish Movement Phase"))
-        {
-            testMovementPhase = false;
-            testAttackPhase = true;
-            _previousSelectableReference?.OnDeselect();
-            _previousControllableReference = null;
-            _previousSelectableReference = null;
-        }
-        
-        if (GUI.Button(new Rect(10, 50, 250, 25), "Finish Attack Phase"))
-        {
-            testMovementPhase = true;
-            testAttackPhase = false;
-        }
-
-        if (!ShouldShowAttackList) return;
-        GUI.Box(new Rect(10, 90, 300, 300),
-            "Possible Attacks for character: " + _previousControllableReference.GetName());
-        int baseY = 90 + 40;
-        foreach(var attackScriptable in _previousControllableReference?.GetAttacks())
-        {
-            if (GUI.Button(new Rect(20, baseY, 280, 25), attackScriptable.name))
-            {
-                _previousControllableReference?.PerformAttack((IAttack)attackScriptable,_aiTarget);
-            }
-            baseY += 40;
-        }
-
-        if (GUI.Button(new Rect(20, 390 - 40, 280, 25), "Cancel Attack"))
-        {
-            _previousSelectableReference?.OnDeselect();
-            _previousControllableReference = null;
-            _previousSelectableReference = null;
-            _aiTarget = null;
-            ShouldShowAttackList = false;
-        }
     }
 }

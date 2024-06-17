@@ -39,7 +39,6 @@ public class OpenWorldInputSystem : MonoBehaviour
                CombatIteractable combat = hit.collider.GetComponent<CombatIteractable>();
                if (combat != null) HandleCombatStart(combat);
                if (selectable == null) HandleMoveInput(hit);
-               
             }
         }
     }
