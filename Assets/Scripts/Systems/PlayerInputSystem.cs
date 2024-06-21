@@ -12,17 +12,17 @@ public class PlayerInputSystem : MonoBehaviour
     private IControllable _aiTarget;
     private IControllable _previousControllableReference;
     private Camera _mainCamera;
-    
+
 
     private bool _isMovementPhase = true;
     private bool _isAttackPhase;
 
     [SerializeField] private UIDocument uiDocument;
-    [SerializeField] private VisualTreeAsset attackButtonComponent; 
+    [SerializeField] private VisualTreeAsset attackButtonComponent;
     private VisualElement _rootElement;
 
     [SerializeField] private GameEvent startAIEvent;
-    
+
     private void Update()
     {
         if (_previousControllableReference == null) HideAttacks();
@@ -35,8 +35,8 @@ public class PlayerInputSystem : MonoBehaviour
         VisualElement possibleAttacksContainer = _rootElement.Q<VisualElement>("PossibleAttacks");
         VisualElement attackContainer = _rootElement.Q<VisualElement>("AttackListContainer");
         possibleAttacksContainer.style.display = DisplayStyle.Flex;
-        
-        
+
+
         foreach (ScriptableObject attackObject in _previousControllableReference.GetAttacks())
         {
             IAttack attack = (IAttack)attackObject;
@@ -53,7 +53,7 @@ public class PlayerInputSystem : MonoBehaviour
 
     private void OnAttackClick(IAttack attack)
     {
-        _previousControllableReference.PerformAttack(attack,_aiTarget);
+        _previousControllableReference.PerformAttack(attack, _aiTarget);
     }
 
     private void HideAttacks()
@@ -86,7 +86,7 @@ public class PlayerInputSystem : MonoBehaviour
         _rootElement.Q<VisualElement>("Buttons").style.display = DisplayStyle.Flex;
         _rootElement.Q<Label>("Turn").text = "Your Turn";
     }
-    
+
     private void OnEndPhaseClicked()
     {
         if (_isMovementPhase)
@@ -125,7 +125,7 @@ public class PlayerInputSystem : MonoBehaviour
             Vector3 mouseScreenPosition = Input.mousePosition;
             if (Physics.Raycast(_mainCamera.ScreenPointToRay(mouseScreenPosition), out var hit))
             {
-                
+
                 IAIControllable aiTarget = hit.collider.GetComponent<IAIControllable>();
                 if (aiTarget != null)
                 {
@@ -135,12 +135,12 @@ public class PlayerInputSystem : MonoBehaviour
                         return;
                     }
                     _aiTarget = hit.collider.GetComponent<IControllable>();
-                        Debug.Log("both offender and target set");
-                        ShowAttacks();
+                    Debug.Log("both offender and target set");
+                    ShowAttacks();
                     return;
                 }
                 ISelectable selectable = hit.collider.GetComponent<ISelectable>();
-                if (selectable != null) HandleSelectable(selectable,hit.collider.GetComponent<IControllable>());
+                if (selectable != null) HandleSelectable(selectable, hit.collider.GetComponent<IControllable>());
             }
         }
     }
@@ -152,9 +152,9 @@ public class PlayerInputSystem : MonoBehaviour
             Vector3 mouseScreenPosition = Input.mousePosition;
             if (Physics.Raycast(_mainCamera.ScreenPointToRay(mouseScreenPosition), out var hit))
             {
-               ISelectable selectable = hit.collider.GetComponent<ISelectable>();
-               if (selectable != null) HandleSelectable(selectable,hit.collider.GetComponent<IControllable>());
-               if (selectable == null) HandleMoveInput(hit);
+                ISelectable selectable = hit.collider.GetComponent<ISelectable>();
+                if (selectable != null) HandleSelectable(selectable, hit.collider.GetComponent<IControllable>());
+                if (selectable == null) HandleMoveInput(hit);
             }
         }
     }
@@ -164,7 +164,7 @@ public class PlayerInputSystem : MonoBehaviour
         _previousControllableReference?.PerformMove(raycastHit.point);
     }
 
-    private void HandleSelectable(ISelectable selectable,IControllable target)
+    private void HandleSelectable(ISelectable selectable, IControllable target)
     {
         HideAttacks();
         if (_previousSelectableReference == selectable)
